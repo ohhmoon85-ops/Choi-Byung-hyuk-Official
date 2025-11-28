@@ -153,7 +153,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentPage }) => {
               <div className="space-y-3">
                 <div className="flex items-center text-gray-400 text-sm">
                   <Mail size={16} className="mr-2" />
-                  <span>official@choibyunghyuk.kr</span>
+                  <span>kma4185@gmail.com</span>
                 </div>
                 <div className="flex space-x-4 mt-6">
                   <a href="#" className="text-gray-400 hover:text-gold-500 transition-colors">
