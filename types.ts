@@ -6,6 +6,7 @@ export enum PageType {
   INSIGHTS = 'insights',
   MEDIA = 'media',
   CONTACT = 'contact',
+  ADMIN = 'admin',
 }
 
 export type Language = 'ko' | 'en';
@@ -34,6 +35,7 @@ export interface InsightItem {
   title: string;
   summary: string;
   date: string;
+  lang?: Language; // Optional for static items, required for dynamic items
 }
 
 export interface MediaItem {

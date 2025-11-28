@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Facebook, Twitter, Linkedin, Mail, Globe } from 'lucide-react';
+import { Menu, X, Facebook, Twitter, Linkedin, Mail, Globe, Lock } from 'lucide-react';
 import { PageType } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -169,8 +169,11 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentPage }) => {
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-xs text-gray-500">
-            &copy; {new Date().getFullYear()} Choi Byung-hyuk. All rights reserved.
+          <div className="border-t border-gray-800 mt-12 pt-8 flex justify-between items-center text-xs text-gray-500">
+            <span>&copy; {new Date().getFullYear()} Choi Byung-hyuk. All rights reserved.</span>
+            <button onClick={() => navigate(PageType.ADMIN)} className="flex items-center hover:text-gray-400">
+              <Lock size={10} className="mr-1" /> Admin
+            </button>
           </div>
         </div>
       </footer>

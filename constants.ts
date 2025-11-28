@@ -191,6 +191,20 @@ export const TRANSLATIONS = {
         submit: "메시지 전송하기"
       }
     },
+    admin: {
+      loginTitle: "관리자 로그인",
+      password: "비밀번호",
+      loginButton: "로그인",
+      dashboardTitle: "작가 대시보드",
+      writeTitle: "새 글 쓰기",
+      formTitle: "제목",
+      formCategory: "카테고리",
+      formSummary: "요약 내용",
+      formLang: "언어 설정",
+      saveButton: "글 게시하기",
+      successMessage: "성공적으로 게시되었습니다.",
+      backButton: "홈으로 돌아가기"
+    },
     footer: {
       desc: "전 한미연합사 부사령관\n전 주 사우디아라비아 대사\n\n대한민국의 굳건한 안보와\n실리적 외교를 위한 평생의 헌신.",
       quickLinks: "Quick Links",
@@ -386,6 +400,20 @@ export const TRANSLATIONS = {
         message: "Message",
         submit: "Send Message"
       }
+    },
+    admin: {
+      loginTitle: "Admin Login",
+      password: "Password",
+      loginButton: "Login",
+      dashboardTitle: "Author Dashboard",
+      writeTitle: "Write New Post",
+      formTitle: "Title",
+      formCategory: "Category",
+      formSummary: "Summary",
+      formLang: "Language",
+      saveButton: "Publish Post",
+      successMessage: "Successfully published.",
+      backButton: "Back to Home"
     },
     footer: {
       desc: "Former Deputy Commander, ROK-US CFC\nFormer Ambassador to Saudi Arabia\n\nA lifetime of dedication to\nrobust security and practical diplomacy.",

@@ -5,6 +5,7 @@ import { Profile } from './pages/Profile';
 import { Insights } from './pages/Insights';
 import { Media } from './pages/Media';
 import { Contact } from './pages/Contact';
+import { Admin } from './pages/Admin';
 import { PageType } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
 
@@ -19,6 +20,7 @@ export default function App() {
       else if (hash === 'insights') setCurrentPage(PageType.INSIGHTS);
       else if (hash === 'media') setCurrentPage(PageType.MEDIA);
       else if (hash === 'contact') setCurrentPage(PageType.CONTACT);
+      else if (hash === 'admin') setCurrentPage(PageType.ADMIN);
       else setCurrentPage(PageType.HOME);
       
       window.scrollTo(0, 0);
@@ -43,6 +45,8 @@ export default function App() {
         return <Media />;
       case PageType.CONTACT:
         return <Contact />;
+      case PageType.ADMIN:
+        return <Admin />;
       default:
         return <Home />;
     }
@@ -50,9 +54,13 @@ export default function App() {
 
   return (
     <LanguageProvider>
-      <Layout currentPage={currentPage}>
-        {renderPage()}
-      </Layout>
+      {currentPage === PageType.ADMIN ? (
+        <Admin />
+      ) : (
+        <Layout currentPage={currentPage}>
+          {renderPage()}
+        </Layout>
+      )}
     </LanguageProvider>
   );
 }
