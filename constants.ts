@@ -77,24 +77,24 @@ export const MEDIA_ITEMS: MediaItem[] = [
     id: 1,
     type: "photo",
     title: "사우디 투자부 장관 면담 및 경제 협력 논의",
-    imageUrl: "./assets/media_saudi.png"
+    imageUrl: "/assets/media_saudi.png"
   },
   {
     id: 2,
     type: "photo",
     title: "제29대 한미연합사 부사령관 이임식 고별 연설",
-    imageUrl: "./assets/media_speech.png"
+    imageUrl: "/assets/media_speech.png"
   },
   {
     id: 3,
     type: "photo",
     title: "주 사우디아라비아 대사 신임장 수여식",
-    imageUrl: "./assets/media_president.png"
+    imageUrl: "/assets/media_president.png"
   },
   {
     id: 4,
     type: "photo",
     title: "한미 연합 방위 태세 현장 점검 (with Gen. Abrams)",
-    imageUrl: "./assets/media_abrams.png"
+    imageUrl: "/assets/media_abrams.png"
   }
 ];
