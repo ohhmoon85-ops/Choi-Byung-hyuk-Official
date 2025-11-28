@@ -10,16 +10,16 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const PROFILE_TIMELINE: TimelineItem[] = [
   {
-    period: "2019 - 2020",
-    role: "제29대 한미연합군사령부 부사령관 (육군 대장)",
-    description: "한미 연합 방위 태세 강화 및 전시작전통제권 전환 기틀 마련, 굳건한 한미 동맹의 실질적 지휘.",
-    type: "military"
-  },
-  {
     period: "2020 - 2022",
     role: "주 사우디아라비아 대한민국 특명전권대사",
     description: "'비전 2030' 협력 강화를 통한 한-사우디 관계 격상, 에너지 안보 및 방산 수출 주도.",
     type: "diplomacy"
+  },
+  {
+    period: "2019 - 2020",
+    role: "제29대 한미연합군사령부 부사령관 (육군 대장)",
+    description: "한미 연합 방위 태세 강화 및 전시작전통제권 전환 기틀 마련, 굳건한 한미 동맹의 실질적 지휘.",
+    type: "military"
   },
   {
     period: "2017 - 2019",
