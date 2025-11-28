@@ -5,7 +5,8 @@ import { Language } from '../types';
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  content: typeof TRANSLATIONS.ko;
+  // Use indexed access to ensure type compatibility
+  content: typeof TRANSLATIONS['ko'];
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);

@@ -130,20 +130,7 @@ export const TRANSLATIONS = {
           summary: "변화하는 안보 환경 속에서 한미 동맹이 추구해야 할 실질적인 억제력 강화 방안을 모색합니다.",
           date: "2023. 07. 12"
         }
-      ],
-      sidebar: {
-        newsletter: {
-          title: "뉴스레터 구독",
-          desc: "최병혁의 새로운 칼럼과 소식을 메일로 받아보세요.",
-          placeholder: "이메일 주소를 입력하세요",
-          button: "구독하기"
-        },
-        author: {
-          title: "작가의 공간",
-          desc: "새로운 통찰과 기록을 남기시겠습니까?",
-          button: "새 글 쓰기"
-        }
-      }
+      ]
     },
     media: {
       header: {
@@ -339,20 +326,7 @@ export const TRANSLATIONS = {
           summary: "Exploring practical ways to strengthen deterrence for the ROK-US alliance in a changing security environment.",
           date: "Jul 12, 2023"
         }
-      ],
-      sidebar: {
-        newsletter: {
-          title: "Newsletter",
-          desc: "Receive the latest columns and news from Choi Byung-hyuk.",
-          placeholder: "Enter your email",
-          button: "Subscribe"
-        },
-        author: {
-          title: "Writer's Space",
-          desc: "Would you like to share new insights?",
-          button: "Write New Post"
-        }
-      }
+      ]
     },
     media: {
       header: {
@@ -419,4 +393,4 @@ export const TRANSLATIONS = {
       contact: "Contact"
     }
   }
-} as const;
+};
