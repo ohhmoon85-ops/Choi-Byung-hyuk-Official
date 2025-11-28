@@ -363,8 +363,8 @@ export const TRANSLATIONS = {
         {
           id: 3,
           type: "photo",
-          title: "Credential Presentation Ceremony as Ambassador",
-          imageUrl: "/assets/media_president.jpg"
+          title: "Honor to be with this man",
+          imageUrl: "/assets/media_glory.jpg"
         },
         {
           id: 4,
