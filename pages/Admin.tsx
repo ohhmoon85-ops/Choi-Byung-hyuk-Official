@@ -21,7 +21,7 @@ export const Admin: React.FC = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Simple mock password
-    if (password === 'admin1234') {
+    if (password === 'admin123') {
       setIsAuthenticated(true);
       setError('');
     } else {
