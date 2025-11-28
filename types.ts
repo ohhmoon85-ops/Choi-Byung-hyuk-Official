@@ -8,6 +8,8 @@ export enum PageType {
   CONTACT = 'contact',
 }
 
+export type Language = 'ko' | 'en';
+
 export interface NavItem {
   label: string;
   page: PageType;

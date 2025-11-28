@@ -6,6 +6,7 @@ import { Insights } from './pages/Insights';
 import { Media } from './pages/Media';
 import { Contact } from './pages/Contact';
 import { PageType } from './types';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<PageType>(PageType.HOME);
@@ -48,8 +49,10 @@ export default function App() {
   };
 
   return (
-    <Layout currentPage={currentPage}>
-      {renderPage()}
-    </Layout>
+    <LanguageProvider>
+      <Layout currentPage={currentPage}>
+        {renderPage()}
+      </Layout>
+    </LanguageProvider>
   );
 }

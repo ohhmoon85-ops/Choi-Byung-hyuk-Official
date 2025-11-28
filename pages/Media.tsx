@@ -1,17 +1,19 @@
 import React from 'react';
 import { PlayCircle, Image as ImageIcon, FileText } from 'lucide-react';
-import { MEDIA_ITEMS } from '../constants';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const Media: React.FC = () => {
+  const { content } = useLanguage();
+  const t = content.media;
+
   return (
     <div className="bg-white animate-fade-in">
       {/* Header */}
       <div className="bg-gray-50 py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-serif font-bold text-navy-900 mb-4">현장의 기록</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            치열했던 훈련 현장부터 긴박했던 외교 무대까지,<br/>
-            역사의 한 페이지를 장식한 순간들입니다.
+          <h1 className="text-4xl font-serif font-bold text-navy-900 mb-4">{t.header.title}</h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto whitespace-pre-line">
+            {t.header.desc}
           </p>
         </div>
       </div>
@@ -19,7 +21,7 @@ export const Media: React.FC = () => {
       {/* Gallery Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {MEDIA_ITEMS.map((item) => (
+          {t.items.map((item) => (
             <div key={item.id} className="group relative overflow-hidden rounded-lg shadow-sm cursor-pointer">
               {/* Image Container */}
               <div className="aspect-w-16 aspect-h-9 w-full h-80 overflow-hidden bg-gray-200">
