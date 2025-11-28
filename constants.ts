@@ -75,42 +75,26 @@ export const INSIGHT_POSTS: InsightItem[] = [
 export const MEDIA_ITEMS: MediaItem[] = [
   {
     id: 1,
-    type: "video",
-    title: "한미연합사 이임식 연설 ('We Go Together')",
-    imageUrl: "https://images.unsplash.com/photo-1541872703-74c5963631df?auto=format&fit=crop&q=80&w=800"
+    type: "photo",
+    title: "사우디 투자부 장관 면담 및 경제 협력 논의",
+    imageUrl: "https://images.unsplash.com/photo-1559592413-7cec4d0ea49b?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: 2,
     type: "photo",
-    title: "사우디 왕세자 접견 및 외교 행사",
-    imageUrl: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&q=80&w=800"
+    title: "제29대 한미연합사 부사령관 이임식 고별 연설",
+    imageUrl: "https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: 3,
-    type: "press",
-    title: "[조선일보] 최병혁 전 대사, '중동은 기회의 땅... 전략적 접근 필요'",
-    source: "조선일보",
-    date: "2023. 05. 20",
-    imageUrl: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=800"
+    type: "photo",
+    title: "주 사우디아라비아 대사 신임장 수여식",
+    imageUrl: "https://images.unsplash.com/photo-1550965386-7a763f0d5718?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: 4,
     type: "photo",
-    title: "한미 연합 훈련 현장 지휘",
+    title: "한미 연합 방위 태세 현장 점검 (with Gen. Abrams)",
     imageUrl: "https://images.unsplash.com/photo-1596726756616-83296c68e16d?auto=format&fit=crop&q=80&w=800"
-  },
-  {
-    id: 5,
-    type: "video",
-    title: "국방 포럼 기조연설 하이라이트",
-    imageUrl: "https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=800"
-  },
-  {
-    id: 6,
-    type: "press",
-    title: "[국방일보] 한미 동맹의 산증인, 최병혁 장군을 만나다",
-    source: "국방일보",
-    date: "2023. 04. 15",
-    imageUrl: "https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?auto=format&fit=crop&q=80&w=800"
   }
 ];
