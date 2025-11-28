@@ -26,7 +26,7 @@ export const Contact: React.FC = () => {
                   <Mail className="w-6 h-6 mr-4 mt-1 text-gray-400" />
                   <div>
                     <p className="text-sm text-gray-400 uppercase tracking-wide">Email</p>
-                    <p className="font-medium">official@choibyunghyuk.kr</p>
+                    <p className="font-medium">kma4185@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-start">
