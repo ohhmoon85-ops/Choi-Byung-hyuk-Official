@@ -153,8 +153,8 @@ export const TRANSLATIONS = {
         {
           id: 3,
           type: "photo",
-          title: "이 남자와 함께 해 영광",
-          imageUrl: "/assets/media_glory.jpg"
+          title: "주 사우디 대사 신임장 수여식",
+          imageUrl: "/assets/media_credence.jpg"
         },
         {
           id: 4,
@@ -363,8 +363,8 @@ export const TRANSLATIONS = {
         {
           id: 3,
           type: "photo",
-          title: "Honor to be with this man",
-          imageUrl: "/assets/media_glory.jpg"
+          title: "Presentation of Letters of Credence to the Saudi Ambassador",
+          imageUrl: "/assets/media_credence.jpg"
         },
         {
           id: 4,
