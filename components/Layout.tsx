@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Menu, X, Facebook, Twitter, Linkedin, Mail, Globe, Lock } from 'lucide-react';
+import { Menu, X, Mail, Globe, Lock } from 'lucide-react';
 import { PageType } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { CONTACT_EMAIL } from '../constants';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -147,24 +148,13 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentPage }) => {
               </ul>
             </div>
 
-            {/* Contact & Social */}
+            {/* Contact */}
             <div>
               <h4 className="text-gold-500 font-medium mb-4 uppercase text-sm tracking-wider">{content.footer.contact}</h4>
               <div className="space-y-3">
                 <div className="flex items-center text-gray-400 text-sm">
                   <Mail size={16} className="mr-2" />
-                  <span>kma4185@gmail.com</span>
-                </div>
-                <div className="flex space-x-4 mt-6">
-                  <a href="#" className="text-gray-400 hover:text-gold-500 transition-colors">
-                    <Facebook size={20} />
-                  </a>
-                  <a href="#" className="text-gray-400 hover:text-gold-500 transition-colors">
-                    <Twitter size={20} />
-                  </a>
-                  <a href="#" className="text-gray-400 hover:text-gold-500 transition-colors">
-                    <Linkedin size={20} />
-                  </a>
+                  <span>{CONTACT_EMAIL}</span>
                 </div>
               </div>
             </div>
