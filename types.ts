@@ -30,12 +30,13 @@ export interface TimelineItem {
 }
 
 export interface InsightItem {
-  id: number;
+  id: string; // Changed to string for Firestore ID
   category: string;
   title: string;
   summary: string;
+  content?: string; // Full body content
   date: string;
-  lang?: Language; // Optional for static items, required for dynamic items
+  lang?: Language; 
 }
 
 export interface MediaItem {
