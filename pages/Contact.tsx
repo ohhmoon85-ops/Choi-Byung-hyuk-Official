@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, MapPin } from 'lucide-react';
+import { Mail, MapPin, Loader2, Send } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { CONTACT_EMAIL } from '../constants';
 
@@ -12,16 +12,53 @@ export const Contact: React.FC = () => {
   const [email, setEmail] = useState('');
   const [type, setType] = useState(t.form.typeOptions[0]);
   const [message, setMessage] = useState('');
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
-    // Construct mailto link
-    const subject = `[${type}] ${name} (${org}) 님의 문의`;
-    const body = `이름: ${name}%0D%0A소속: ${org}%0D%0A이메일: ${email}%0D%0A문의 유형: ${type}%0D%0A%0D%0A[내용]%0D%0A${message}`;
-    
-    // Open default mail client
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+    // FormSubmit Endpoint
+    // Ajax 요청을 통해 이메일을 전송합니다.
+    const endpoint = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`;
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `[웹사이트 문의] ${type} - ${name}`, // 메일 제목
+          _template: 'table', // 메일 디자인 템플릿
+          _captcha: 'false', // 캡차 비활성화 (필요시 'true')
+          name: name,
+          organization: org,
+          email: email, // 답장 받을 이메일 (Reply-To)
+          inquiry_type: type,
+          message: message
+        })
+      });
+
+      if (response.ok) {
+        alert("메시지가 성공적으로 전송되었습니다.\n검토 후 빠른 시일 내에 답변 드리겠습니다.");
+        // 폼 초기화
+        setName('');
+        setOrg('');
+        setEmail('');
+        setMessage('');
+        setType(t.form.typeOptions[0]);
+      } else {
+        throw new Error('전송 실패');
+      }
+    } catch (error) {
+      console.error(error);
+      alert("메시지 전송 중 오류가 발생했습니다.\n잠시 후 다시 시도해주시거나, 이메일로 직접 연락 부탁드립니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -44,7 +81,7 @@ export const Contact: React.FC = () => {
                   <Mail className="w-6 h-6 mr-4 mt-1 text-gray-400" />
                   <div>
                     <p className="text-sm text-gray-400 uppercase tracking-wide">Email</p>
-                    <p className="font-medium">{CONTACT_EMAIL}</p>
+                    <p className="font-medium break-all">{CONTACT_EMAIL}</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -79,7 +116,8 @@ export const Contact: React.FC = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="w-full px-4 py-3 rounded-sm border border-gray-300 focus:outline-none focus:border-navy-900 focus:ring-1 focus:ring-navy-900" 
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 rounded-sm border border-gray-300 focus:outline-none focus:border-navy-900 focus:ring-1 focus:ring-navy-900 disabled:bg-gray-100" 
                   />
                 </div>
                 <div>
@@ -89,7 +127,8 @@ export const Contact: React.FC = () => {
                     value={org}
                     onChange={(e) => setOrg(e.target.value)}
                     required
-                    className="w-full px-4 py-3 rounded-sm border border-gray-300 focus:outline-none focus:border-navy-900 focus:ring-1 focus:ring-navy-900" 
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 rounded-sm border border-gray-300 focus:outline-none focus:border-navy-900 focus:ring-1 focus:ring-navy-900 disabled:bg-gray-100" 
                   />
                 </div>
               </div>
@@ -102,7 +141,9 @@ export const Contact: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full px-4 py-3 rounded-sm border border-gray-300 focus:outline-none focus:border-navy-900 focus:ring-1 focus:ring-navy-900" 
+                    disabled={isSubmitting}
+                    placeholder="답변 받으실 이메일 주소"
+                    className="w-full px-4 py-3 rounded-sm border border-gray-300 focus:outline-none focus:border-navy-900 focus:ring-1 focus:ring-navy-900 disabled:bg-gray-100" 
                   />
                 </div>
                 <div>
@@ -110,7 +151,8 @@ export const Contact: React.FC = () => {
                   <select 
                     value={type}
                     onChange={(e) => setType(e.target.value)}
-                    className="w-full px-4 py-3 rounded-sm border border-gray-300 focus:outline-none focus:border-navy-900 focus:ring-1 focus:ring-navy-900 bg-white"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 rounded-sm border border-gray-300 focus:outline-none focus:border-navy-900 focus:ring-1 focus:ring-navy-900 bg-white disabled:bg-gray-100"
                   >
                     {t.form.typeOptions.map((opt, idx) => (
                       <option key={idx} value={opt}>{opt}</option>
@@ -126,13 +168,28 @@ export const Contact: React.FC = () => {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required
-                  className="w-full px-4 py-3 rounded-sm border border-gray-300 focus:outline-none focus:border-navy-900 focus:ring-1 focus:ring-navy-900"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 rounded-sm border border-gray-300 focus:outline-none focus:border-navy-900 focus:ring-1 focus:ring-navy-900 disabled:bg-gray-100"
                 ></textarea>
               </div>
 
               <div className="flex justify-end">
-                <button type="submit" className="px-8 py-4 bg-navy-900 text-white font-bold rounded-sm hover:bg-navy-800 transition-colors">
-                  {t.form.submit}
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="px-8 py-4 bg-navy-900 text-white font-bold rounded-sm hover:bg-navy-800 transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="animate-spin" size={20} />
+                      전송 중...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={20} />
+                      {t.form.submit}
+                    </>
+                  )}
                 </button>
               </div>
             </form>
