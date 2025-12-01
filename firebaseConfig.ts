@@ -1,4 +1,4 @@
-// ✅ Vite 환경에 맞는 올바른 코드입니다.
+// firebaseConfig.ts (Vite 전용 코드)
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
