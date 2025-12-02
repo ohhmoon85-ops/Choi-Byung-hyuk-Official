@@ -21,6 +21,7 @@ export const Contact: React.FC = () => {
     
     // FormSubmit Endpoint
     // Ajax 요청을 통해 이메일을 전송합니다.
+    // CONTACT_EMAIL 상수를 사용하여 constants.ts에서 정의된 이메일로 발송됩니다.
     const endpoint = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`;
 
     try {
