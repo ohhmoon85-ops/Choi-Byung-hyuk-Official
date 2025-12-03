@@ -15,7 +15,7 @@ export const Admin: React.FC = () => {
   
   // Form State
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('National Security');
+  const [category, setCategory] = useState('한미동맹의 고도화와 미래 (ROK-US Alliance)');
   const [summary, setSummary] = useState('');
   const [bodyContent, setBodyContent] = useState('');
   const [lang, setLang] = useState<Language>('ko');
@@ -80,7 +80,7 @@ export const Admin: React.FC = () => {
   const cancelEdit = () => {
     setEditingId(null);
     setTitle('');
-    setCategory('National Security');
+    setCategory('한미동맹의 고도화와 미래 (ROK-US Alliance)');
     setSummary('');
     setBodyContent('');
     setLang('ko');
@@ -230,9 +230,11 @@ export const Admin: React.FC = () => {
                   placeholder="직접 입력 또는 선택"
                 />
                 <datalist id="categories">
-                  <option value="National Security" />
-                  <option value="Diplomacy & Economy" />
-                  <option value="Leadership" />
+                  <option value="한미동맹의 고도화와 미래 (ROK-US Alliance)" />
+                  <option value="남북관계와 비대칭 위협 대응 (Inter-Korean Relations)" />
+                  <option value="미중 패권 경쟁과 한중 관계 (US-China & ROK-China)" />
+                  <option value="한반도 주변국 및 역내 안보 (Japan, Russia & Regional Security)" />
+                  <option value="글로벌 복합 위기와 확장된 안보 (Global Security & Middle East)" />
                 </datalist>
               </div>
               <div>
