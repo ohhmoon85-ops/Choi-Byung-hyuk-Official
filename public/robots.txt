@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://choi-byung-hyuk.vercel.app/sitemap.xml
