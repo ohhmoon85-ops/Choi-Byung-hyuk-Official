@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 // ------------------------------------------------------------------
-// 🛠️ [내부 정의] 경로 의존성 제거 및 타입 설정
+// 🛠️ [경로 오류 방지용] 이 파일 하나로 모든 게 작동하도록 내부 정의
 // ------------------------------------------------------------------
 
 // 1. 타입 정의
@@ -17,7 +17,7 @@ interface InsightItem {
   [key: string]: any;
 }
 
-// 2. 언어 설정 기능 모의 (Context 파일 의존성 제거)
+// 2. 언어 설정 기능 모의 (LanguageContext 대체 - 한국어 고정)
 const useLanguage = () => {
   return {
     language: 'KO', 
@@ -38,9 +38,9 @@ const useLanguage = () => {
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, query } from "firebase/firestore";
 
-// 🛠️ [핵심 수정] 'choi-77760' 프로젝트의 정확한 API Key로 교체했습니다.
+// 🛠️ [중요] 글이 저장된 'choi-77760' 프로젝트와 연결합니다!
 const firebaseConfig = {
-  apiKey: "AIzaSyA9erYjr_w9f0k11ifajB_J3ebw8p8uSNI", // ✅ 올바른 키 (choi-77760)
+  apiKey: "AIzaSyA9erYjr_w9f0k11ifajB_J3ebw8p8uSNI",
   authDomain: "choi-77760.firebaseapp.com",
   projectId: "choi-77760",
   storageBucket: "choi-77760.firebasestorage.app",
@@ -168,6 +168,7 @@ const Insights: React.FC = () => {
 
 // ✅ Named Export와 Default Export 모두 제공하여 에러 방지
 export { Insights };
+export default Insights;
 export default Insights;
 
 // ✅ [중요] 내보내기 설정 수정
