@@ -430,3 +430,8 @@ export const TRANSLATIONS = {
     }
   }
 };
+const Contact = () => {
+  return null;   // 나중에 화면 UI 넣으면 됨
+};
+
+export { Contact };
