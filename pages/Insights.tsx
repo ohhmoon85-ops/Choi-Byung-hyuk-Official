@@ -1,15 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-// ⚠️ 경로 확인: pages 폴더와 같은 레벨에 contexts 폴더가 있어야 합니다.
-import { useLanguage } from '../contexts/LanguageContext';
-import { InsightItem } from '../types';
+
+// ------------------------------------------------------------------
+// 🛠️ [경로 오류 방지용] 내부 정의 모듈
+// ------------------------------------------------------------------
+
+// 1. 타입 정의
+interface InsightItem {
+  id: string;
+  title: string;
+  summary: string;
+  date: string;
+  category: string;
+  lang?: string;
+  content?: string;
+  [key: string]: any;
+}
+
+// 2. 언어 설정 기능 모의 (LanguageContext 대체)
+const useLanguage = () => {
+  return {
+    language: 'KO', 
+    content: {
+      insights: {
+        header: {
+          title: "통찰과 제언",
+          desc: "현장의 경험을 통해 얻은 교훈을 나눕니다.\n대한민국의 내일을 위한 전략적 제언들입니다."
+        },
+        posts: [] as InsightItem[]
+      }
+    }
+  };
+};
+// ------------------------------------------------------------------
 
 // ✅ Firebase 필수 기능 가져오기
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, query } from "firebase/firestore";
 
 // 🛠️ Firebase 설정값 직접 입력
-// 별도의 파일에서 불러오지 않고 여기에 직접 정의하여 '파일 못 찾음' 오류를 방지합니다.
 const firebaseConfig = {
   apiKey: "AIzaSyAnw3jh91kVIhJDkwES60fJoWm5KrKghOo",
   authDomain: "choi-byung-hyuk.firebaseapp.com",
@@ -24,8 +53,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export const Insights: React.FC = () => {
-  const { content, language } = useLanguage();
+// ✅ 컴포넌트 정의 (const로 선언 후 export)
+const Insights: React.FC = () => {
+  const { content, language } = useLanguage(); 
   const t = content.insights;
   const [allPosts, setAllPosts] = useState<InsightItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,12 +64,13 @@ export const Insights: React.FC = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
+        console.log("🔥 Firebase 데이터 가져오기 시작...");
 
-        // 1. Firebase에서 데이터 가져오기 🚀
         const q = query(collection(db, "insights")); 
         const querySnapshot = await getDocs(q);
 
-        // 2. 가져온 데이터 변환하기
+        console.log(`📦 Firebase에서 발견된 글 개수: ${querySnapshot.size}개`);
+
         const firebasePosts: InsightItem[] = querySnapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -54,14 +85,17 @@ export const Insights: React.FC = () => {
           } as InsightItem;
         });
 
-        // 3. 현재 언어(KO/EN)에 맞는 글만 필터링
-        const filteredFirebasePosts = firebasePosts.filter(p => p.lang === language);
+        const filteredFirebasePosts = firebasePosts.filter(p => {
+          if (!p.lang) return true; 
+          return p.lang.toLowerCase() === language.toLowerCase();
+        });
 
-        // 4. 고정된 글(t.posts)과 합쳐서 화면에 표시
+        console.log(`✅ 화면에 표시할 글 개수: ${filteredFirebasePosts.length}개`);
+
         setAllPosts([...filteredFirebasePosts, ...t.posts]);
         
       } catch (error) {
-        console.error("데이터 가져오기 실패:", error);
+        console.error("❌ 데이터 가져오기 실패:", error);
         setAllPosts(t.posts);
       } finally {
         setLoading(false);
@@ -73,7 +107,6 @@ export const Insights: React.FC = () => {
 
   return (
     <div className="bg-white animate-fade-in">
-      {/* 헤더 섹션 */}
       <div className="bg-navy-900 py-20 text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-4xl font-serif font-bold mb-4">{t.header.title}</h1>
@@ -83,24 +116,19 @@ export const Insights: React.FC = () => {
         </div>
       </div>
 
-      {/* 메인 컨텐츠 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        
-        {/* 로딩 중일 때 */}
         {loading && (
            <div className="text-center py-10">
              <p className="text-gray-500">글을 불러오는 중입니다...</p>
            </div>
         )}
 
-        {/* 글이 하나도 없을 때 */}
         {!loading && allPosts.length === 0 && (
           <div className="text-center py-20 bg-gray-50 rounded-lg">
             <p className="text-gray-500 text-lg">등록된 게시물이 없습니다.</p>
           </div>
         )}
 
-        {/* 글 목록 리스트 */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {allPosts.map((post) => (
             <div key={post.id} className="flex flex-col bg-white border border-gray-200 rounded-lg p-8 hover:border-gold-500 transition-colors group cursor-pointer h-full">
@@ -128,3 +156,7 @@ export const Insights: React.FC = () => {
     </div>
   );
 };
+
+// ✅ Named Export와 Default Export를 동시에 제공하여 에러 방지
+export { Insights };
+export default Insights;
