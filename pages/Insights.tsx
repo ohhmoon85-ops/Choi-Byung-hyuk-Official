@@ -172,8 +172,3 @@ const Insights: React.FC = () => {
 // 어떤 방식으로 불러오더라도 에러가 나지 않습니다.
 export default Insights;
 export { Insights };
-};
-
-// ✅ 에러 방지를 위한 내보내기 설정
-export { Insights };
-export default Insights;
