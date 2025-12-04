@@ -3,16 +3,31 @@ import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InsightItem } from '../types';
 
-// ✅ Firebase 기능 가져오기
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-// ⚠️ 중요: pages 폴더에서 한 단계 위(../)로 나가면 바로 firebaseConfig 파일이 있습니다.
-import { db } from '../firebaseConfig'; 
+// ✅ Firebase 필수 기능 가져오기
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, query } from "firebase/firestore";
+
+// 🛠️ Firebase 설정값 직접 입력 (경로 오류 방지용)
+// 사용자님이 보내주신 정확한 설정값입니다.
+const firebaseConfig = {
+  apiKey: "AIzaSyAnw3jh91kVIhJDkwES60fJoWm5KrKghOo",
+  authDomain: "choi-byung-hyuk.firebaseapp.com",
+  projectId: "choi-byung-hyuk",
+  storageBucket: "choi-byung-hyuk.firebasestorage.app",
+  messagingSenderId: "826889552524",
+  appId: "1:826889552524:web:ab7a5f956a0c03d6bab1a9",
+  measurementId: "G-DY673TVWQS"
+};
+
+// Firebase 초기화 (앱이 없으면 만들고, 있으면 기존 것 사용)
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 export const Insights: React.FC = () => {
   const { content, language } = useLanguage();
   const t = content.insights;
   const [allPosts, setAllPosts] = useState<InsightItem[]>([]);
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -20,35 +35,33 @@ export const Insights: React.FC = () => {
         setLoading(true);
 
         // 1. Firebase에서 데이터 가져오기 🚀
-        // insights 컬렉션을 찾습니다.
         const q = query(collection(db, "insights")); 
         const querySnapshot = await getDocs(q);
 
-        // 2. 가져온 데이터를 우리가 쓸 수 있게 변환하기
+        // 2. 가져온 데이터 변환하기
         const firebasePosts: InsightItem[] = querySnapshot.docs.map(doc => {
           const data = doc.data();
           return {
             id: doc.id,
             title: data.title,
-            summary: data.summary, // Firebase에는 summary, content 둘 다 있으니 summary를 씁니다.
+            summary: data.summary,
             date: data.date,
             category: data.category,
             lang: data.lang,
-            content: data.content, // 상세 내용은 클릭했을 때 필요할 수 있음
+            content: data.content,
             ...data
           } as InsightItem;
         });
 
-        // 3. 현재 언어(KO/EN)에 맞는 글만 보여주기
+        // 3. 현재 언어(KO/EN)에 맞는 글만 필터링
         const filteredFirebasePosts = firebasePosts.filter(p => p.lang === language);
 
-        // 4. (선택) 고정된 글(t.posts)과 합쳐서 보여주기
-        // 새 글이 위로 오게 하려면 firebasePosts를 앞에 둡니다.
+        // 4. 고정된 글(t.posts)과 합쳐서 화면에 표시
         setAllPosts([...filteredFirebasePosts, ...t.posts]);
         
       } catch (error) {
         console.error("데이터 가져오기 실패:", error);
-        // 에러가 나면 고정된 글이라도 보여줍니다.
+        // 에러가 나면 기본 글이라도 보여줍니다.
         setAllPosts(t.posts);
       } finally {
         setLoading(false);
@@ -56,7 +69,7 @@ export const Insights: React.FC = () => {
     };
 
     fetchPosts();
-  }, [language, t.posts]); // 언어가 바뀔 때마다 다시 실행
+  }, [language, t.posts]);
 
   return (
     <div className="bg-white animate-fade-in">
