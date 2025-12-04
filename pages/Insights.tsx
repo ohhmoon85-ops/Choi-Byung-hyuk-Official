@@ -38,9 +38,9 @@ const useLanguage = () => {
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, query } from "firebase/firestore";
 
-// 🛠️ [중요] 글이 저장된 'choi-77760' 프로젝트와 연결합니다!
+// 🛠️ [핵심 수정] 주소를 'choi-77760' (데이터가 있는 곳)으로 고쳤습니다!
 const firebaseConfig = {
-  apiKey: "AIzaSyA9erYjr_w9f0k11ifajB_J3ebw8p8uSNI",
+  apiKey: "AIzaSyA9erYjr_w9f0k11ifajB_J3ebw8p8uSNI", // choi-77760 키
   authDomain: "choi-77760.firebaseapp.com",
   projectId: "choi-77760",
   storageBucket: "choi-77760.firebasestorage.app",
@@ -169,10 +169,3 @@ const Insights: React.FC = () => {
 // ✅ Named Export와 Default Export 모두 제공하여 에러 방지
 export { Insights };
 export default Insights;
-export default Insights;
-
-// ✅ [중요] 내보내기 설정 수정
-// 이제 App.tsx에서 'import Insights from ...' 또는 'import { Insights } from ...' 
-// 어떤 방식으로 불러오더라도 에러가 나지 않습니다.
-export default Insights;
-export { Insights };
