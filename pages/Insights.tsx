@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
+// ✅ Firebase 필수 기능 가져오기
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, query } from "firebase/firestore";
+
 // ------------------------------------------------------------------
-// 🛠️ [안전 장치] 파일 경로 오류 방지를 위한 내부 정의
+// 🛠️ [내부 정의] 경로 의존성 제거 및 타입 설정
 // ------------------------------------------------------------------
 
-// 1. 데이터 타입 정의
+// 1. 타입 정의
 interface InsightItem {
   id: string;
   title: string;
@@ -17,8 +21,7 @@ interface InsightItem {
   [key: string]: any;
 }
 
-// 2. 언어 설정 기능 (Context 파일 못 찾는 오류 방지용)
-// 기본적으로 'KO'(한국어)를 보여주도록 설정했습니다.
+// 2. 언어 설정 기능 모의 (Context 파일 의존성 제거)
 const useLanguage = () => {
   return {
     language: 'KO', 
@@ -33,20 +36,15 @@ const useLanguage = () => {
     }
   };
 };
-// ------------------------------------------------------------------
 
-// ✅ Firebase 필수 기능 가져오기
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, query } from "firebase/firestore";
-
-// 🛠️ [핵심] 글이 실제로 저장된 'choi-77760' 프로젝트와 연결합니다!
+// 3. Firebase 설정 (choi-77760 프로젝트)
 const firebaseConfig = {
-  apiKey: "AIzaSyA9erYjr_w9f0k11ifajB_J3ebw8p8uSNI",
+  apiKey: "AIzaSyAnw3jh91kVIhJDkwES60fJoWm5KrKghOo",
   authDomain: "choi-77760.firebaseapp.com",
   projectId: "choi-77760",
   storageBucket: "choi-77760.firebasestorage.app",
   messagingSenderId: "874230762412",
-  appId: "1:874230762412:web:363459c9ce6604ae180809",
+  appId: "1:874230762412:web:ab7a5f956a0c03d6bab1a9",
   measurementId: "G-N1RW0JGTL2"
 };
 
@@ -54,7 +52,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ------------------------------------------------------------------
 // ✅ 컴포넌트 정의
+// ------------------------------------------------------------------
 const Insights: React.FC = () => {
   const { content, language } = useLanguage(); 
   const t = content.insights;
@@ -89,9 +89,7 @@ const Insights: React.FC = () => {
 
         // 2. 필터링 (대소문자 무시)
         const filteredFirebasePosts = firebasePosts.filter(p => {
-          // 언어 설정이 없는 글도 일단 보여줍니다.
           if (!p.lang) return true; 
-          // ko == KO 대소문자 무시하고 비교
           return p.lang.toLowerCase() === language.toLowerCase();
         });
 
@@ -102,7 +100,6 @@ const Insights: React.FC = () => {
         
       } catch (error) {
         console.error("❌ 데이터 가져오기 실패:", error);
-        // 에러가 나도 화면이 깨지지 않도록 기본값 설정
         setAllPosts(t.posts);
       } finally {
         setLoading(false);
@@ -168,6 +165,13 @@ const Insights: React.FC = () => {
       </div>
     </div>
   );
+};
+
+// ✅ [중요] 내보내기 설정 수정
+// 이제 App.tsx에서 'import Insights from ...' 또는 'import { Insights } from ...' 
+// 어떤 방식으로 불러오더라도 에러가 나지 않습니다.
+export default Insights;
+export { Insights };
 };
 
 // ✅ 에러 방지를 위한 내보내기 설정
