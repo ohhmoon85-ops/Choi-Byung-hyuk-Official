@@ -3,9 +3,10 @@ import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { InsightItem } from '../types';
 
-// ✅ Firebase 관련 기능 가져오기 (이 부분이 추가되었습니다!)
+// ✅ Firebase 기능 가져오기
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { db } from '../firebaseConfig'; // 파일 위치에 따라 '../firebaseConfig' 경로가 맞는지 확인 필요
+// ⚠️ 중요: pages 폴더에서 한 단계 위(../)로 나가면 바로 firebaseConfig 파일이 있습니다.
+import { db } from '../firebaseConfig'; 
 
 export const Insights: React.FC = () => {
   const { content, language } = useLanguage();
@@ -18,25 +19,35 @@ export const Insights: React.FC = () => {
       try {
         setLoading(true);
 
-        // 1. Firebase에서 데이터 가져오기 (여기가 핵심입니다!) 🚀
-        // insights 컬렉션을 가져오고, 날짜(date) 기준으로 정렬합니다.
-        const q = query(collection(db, "insights")); // 만약 정렬이 필요하면 query(collection(db, "insights"), orderBy("date", "desc"));
+        // 1. Firebase에서 데이터 가져오기 🚀
+        // insights 컬렉션을 찾습니다.
+        const q = query(collection(db, "insights")); 
         const querySnapshot = await getDocs(q);
 
-        const firebasePosts: InsightItem[] = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as InsightItem[];
+        // 2. 가져온 데이터를 우리가 쓸 수 있게 변환하기
+        const firebasePosts: InsightItem[] = querySnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            title: data.title,
+            summary: data.summary, // Firebase에는 summary, content 둘 다 있으니 summary를 씁니다.
+            date: data.date,
+            category: data.category,
+            lang: data.lang,
+            content: data.content, // 상세 내용은 클릭했을 때 필요할 수 있음
+            ...data
+          } as InsightItem;
+        });
 
-        // 2. 현재 언어(lang)에 맞는 글만 필터링
+        // 3. 현재 언어(KO/EN)에 맞는 글만 보여주기
         const filteredFirebasePosts = firebasePosts.filter(p => p.lang === language);
 
-        // 3. 고정된 글(Static posts)과 합치기 (필요하다면)
-        // Firebase 글을 먼저 보여주고, 그 뒤에 고정 글을 보여줍니다.
+        // 4. (선택) 고정된 글(t.posts)과 합쳐서 보여주기
+        // 새 글이 위로 오게 하려면 firebasePosts를 앞에 둡니다.
         setAllPosts([...filteredFirebasePosts, ...t.posts]);
         
       } catch (error) {
-        console.error("Firebase 데이터 가져오기 실패:", error);
+        console.error("데이터 가져오기 실패:", error);
         // 에러가 나면 고정된 글이라도 보여줍니다.
         setAllPosts(t.posts);
       } finally {
@@ -45,11 +56,11 @@ export const Insights: React.FC = () => {
     };
 
     fetchPosts();
-  }, [language, t.posts]); // 언어가 바뀌면 다시 불러옵니다.
+  }, [language, t.posts]); // 언어가 바뀔 때마다 다시 실행
 
   return (
     <div className="bg-white animate-fade-in">
-      {/* Header */}
+      {/* 헤더 섹션 */}
       <div className="bg-navy-900 py-20 text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-4xl font-serif font-bold mb-4">{t.header.title}</h1>
@@ -59,24 +70,24 @@ export const Insights: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content Layout */}
+      {/* 메인 컨텐츠 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         
-        {/* 로딩 중일 때 표시 */}
+        {/* 로딩 중일 때 */}
         {loading && (
            <div className="text-center py-10">
              <p className="text-gray-500">글을 불러오는 중입니다...</p>
            </div>
         )}
 
-        {/* 글이 없을 때 표시 */}
+        {/* 글이 하나도 없을 때 */}
         {!loading && allPosts.length === 0 && (
           <div className="text-center py-20 bg-gray-50 rounded-lg">
             <p className="text-gray-500 text-lg">등록된 게시물이 없습니다.</p>
           </div>
         )}
 
-        {/* 글 목록 표시 */}
+        {/* 글 목록 리스트 */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {allPosts.map((post) => (
             <div key={post.id} className="flex flex-col bg-white border border-gray-200 rounded-lg p-8 hover:border-gold-500 transition-colors group cursor-pointer h-full">
