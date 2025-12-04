@@ -1,4 +1,3 @@
-import { PageType } from './types';
 
 // Contact Email Constant - Change this single value to update email across the site
 export const CONTACT_EMAIL = "kma4185@gmail.com";
