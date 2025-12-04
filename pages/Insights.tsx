@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
-// ✅ Firebase 필수 기능 가져오기
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, query } from "firebase/firestore";
-
 // ------------------------------------------------------------------
 // 🛠️ [내부 정의] 경로 의존성 제거 및 타입 설정
 // ------------------------------------------------------------------
@@ -36,15 +32,20 @@ const useLanguage = () => {
     }
   };
 };
+// ------------------------------------------------------------------
 
-// 3. Firebase 설정 (choi-77760 프로젝트)
+// ✅ Firebase 필수 기능 가져오기
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, query } from "firebase/firestore";
+
+// 🛠️ [핵심 수정] 'choi-77760' 프로젝트의 정확한 API Key로 교체했습니다.
 const firebaseConfig = {
-  apiKey: "AIzaSyAnw3jh91kVIhJDkwES60fJoWm5KrKghOo",
+  apiKey: "AIzaSyA9erYjr_w9f0k11ifajB_J3ebw8p8uSNI", // ✅ 올바른 키 (choi-77760)
   authDomain: "choi-77760.firebaseapp.com",
   projectId: "choi-77760",
   storageBucket: "choi-77760.firebasestorage.app",
   messagingSenderId: "874230762412",
-  appId: "1:874230762412:web:ab7a5f956a0c03d6bab1a9",
+  appId: "1:874230762412:web:363459c9ce6604ae180809",
   measurementId: "G-N1RW0JGTL2"
 };
 
@@ -52,9 +53,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ------------------------------------------------------------------
 // ✅ 컴포넌트 정의
-// ------------------------------------------------------------------
 const Insights: React.FC = () => {
   const { content, language } = useLanguage(); 
   const t = content.insights;
@@ -166,6 +165,10 @@ const Insights: React.FC = () => {
     </div>
   );
 };
+
+// ✅ Named Export와 Default Export 모두 제공하여 에러 방지
+export { Insights };
+export default Insights;
 
 // ✅ [중요] 내보내기 설정 수정
 // 이제 App.tsx에서 'import Insights from ...' 또는 'import { Insights } from ...' 
