@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 // ------------------------------------------------------------------
-// 🛠️ [경로 오류 방지용] 내부 정의 모듈
+// 🛠️ [안전 장치] 파일 경로 오류 방지를 위한 내부 정의
 // ------------------------------------------------------------------
 
-// 1. 타입 정의
+// 1. 데이터 타입 정의
 interface InsightItem {
   id: string;
   title: string;
@@ -17,7 +17,8 @@ interface InsightItem {
   [key: string]: any;
 }
 
-// 2. 언어 설정 기능 모의 (LanguageContext 대체)
+// 2. 언어 설정 기능 (Context 파일 못 찾는 오류 방지용)
+// 기본적으로 'KO'(한국어)를 보여주도록 설정했습니다.
 const useLanguage = () => {
   return {
     language: 'KO', 
@@ -38,22 +39,22 @@ const useLanguage = () => {
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, query } from "firebase/firestore";
 
-// 🛠️ Firebase 설정값 직접 입력
+// 🛠️ [핵심] 글이 실제로 저장된 'choi-77760' 프로젝트와 연결합니다!
 const firebaseConfig = {
-  apiKey: "AIzaSyAnw3jh91kVIhJDkwES60fJoWm5KrKghOo",
-  authDomain: "choi-byung-hyuk.firebaseapp.com",
-  projectId: "choi-byung-hyuk",
-  storageBucket: "choi-byung-hyuk.firebasestorage.app",
-  messagingSenderId: "826889552524",
-  appId: "1:826889552524:web:ab7a5f956a0c03d6bab1a9",
-  measurementId: "G-DY673TVWQS"
+  apiKey: "AIzaSyA9erYjr_w9f0k11ifajB_J3ebw8p8uSNI",
+  authDomain: "choi-77760.firebaseapp.com",
+  projectId: "choi-77760",
+  storageBucket: "choi-77760.firebasestorage.app",
+  messagingSenderId: "874230762412",
+  appId: "1:874230762412:web:363459c9ce6604ae180809",
+  measurementId: "G-N1RW0JGTL2"
 };
 
 // Firebase 초기화
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ 컴포넌트 정의 (const로 선언 후 export)
+// ✅ 컴포넌트 정의
 const Insights: React.FC = () => {
   const { content, language } = useLanguage(); 
   const t = content.insights;
@@ -64,12 +65,13 @@ const Insights: React.FC = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        console.log("🔥 Firebase 데이터 가져오기 시작...");
+        console.log("🔥 [choi-77760] 데이터 가져오기 시작...");
 
+        // 1. 데이터 가져오기
         const q = query(collection(db, "insights")); 
         const querySnapshot = await getDocs(q);
 
-        console.log(`📦 Firebase에서 발견된 글 개수: ${querySnapshot.size}개`);
+        console.log(`📦 발견된 글 개수: ${querySnapshot.size}개`);
 
         const firebasePosts: InsightItem[] = querySnapshot.docs.map(doc => {
           const data = doc.data();
@@ -85,17 +87,22 @@ const Insights: React.FC = () => {
           } as InsightItem;
         });
 
+        // 2. 필터링 (대소문자 무시)
         const filteredFirebasePosts = firebasePosts.filter(p => {
+          // 언어 설정이 없는 글도 일단 보여줍니다.
           if (!p.lang) return true; 
+          // ko == KO 대소문자 무시하고 비교
           return p.lang.toLowerCase() === language.toLowerCase();
         });
 
-        console.log(`✅ 화면에 표시할 글 개수: ${filteredFirebasePosts.length}개`);
+        console.log(`✅ 화면 표시 개수: ${filteredFirebasePosts.length}개`);
 
+        // 3. 합치기
         setAllPosts([...filteredFirebasePosts, ...t.posts]);
         
       } catch (error) {
         console.error("❌ 데이터 가져오기 실패:", error);
+        // 에러가 나도 화면이 깨지지 않도록 기본값 설정
         setAllPosts(t.posts);
       } finally {
         setLoading(false);
@@ -107,6 +114,7 @@ const Insights: React.FC = () => {
 
   return (
     <div className="bg-white animate-fade-in">
+      {/* 헤더 섹션 */}
       <div className="bg-navy-900 py-20 text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-4xl font-serif font-bold mb-4">{t.header.title}</h1>
@@ -116,19 +124,24 @@ const Insights: React.FC = () => {
         </div>
       </div>
 
+      {/* 메인 컨텐츠 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        
+        {/* 로딩 중일 때 */}
         {loading && (
            <div className="text-center py-10">
              <p className="text-gray-500">글을 불러오는 중입니다...</p>
            </div>
         )}
 
+        {/* 글이 하나도 없을 때 */}
         {!loading && allPosts.length === 0 && (
           <div className="text-center py-20 bg-gray-50 rounded-lg">
             <p className="text-gray-500 text-lg">등록된 게시물이 없습니다.</p>
           </div>
         )}
 
+        {/* 글 목록 리스트 */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {allPosts.map((post) => (
             <div key={post.id} className="flex flex-col bg-white border border-gray-200 rounded-lg p-8 hover:border-gold-500 transition-colors group cursor-pointer h-full">
@@ -157,6 +170,6 @@ const Insights: React.FC = () => {
   );
 };
 
-// ✅ Named Export와 Default Export를 동시에 제공하여 에러 방지
+// ✅ 에러 방지를 위한 내보내기 설정
 export { Insights };
 export default Insights;
