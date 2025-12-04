@@ -1,10 +1,12 @@
 import React from 'react';
 import { PlayCircle, Image as ImageIcon, FileText } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { MediaItem } from '../types';
 
 export const Media: React.FC = () => {
   const { content } = useLanguage();
   const t = content.media;
+  const items = t.items as unknown as MediaItem[];
 
   return (
     <div className="bg-white animate-fade-in">
@@ -21,7 +23,7 @@ export const Media: React.FC = () => {
       {/* Gallery Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {t.items.map((item) => (
+          {items.map((item) => (
             <div key={item.id} className="group relative overflow-hidden rounded-lg shadow-sm cursor-pointer">
               {/* Image Container */}
               <div className="aspect-w-16 aspect-h-9 w-full h-80 overflow-hidden bg-gray-200">
