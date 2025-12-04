@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+// ⚠️ 경로 확인: pages 폴더와 같은 레벨에 contexts 폴더가 있어야 합니다.
 import { useLanguage } from '../contexts/LanguageContext';
 import { InsightItem } from '../types';
 
@@ -7,8 +8,8 @@ import { InsightItem } from '../types';
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, query } from "firebase/firestore";
 
-// 🛠️ Firebase 설정값 직접 입력 (경로 오류 방지용)
-// 사용자님이 보내주신 정확한 설정값입니다.
+// 🛠️ Firebase 설정값 직접 입력
+// 별도의 파일에서 불러오지 않고 여기에 직접 정의하여 '파일 못 찾음' 오류를 방지합니다.
 const firebaseConfig = {
   apiKey: "AIzaSyAnw3jh91kVIhJDkwES60fJoWm5KrKghOo",
   authDomain: "choi-byung-hyuk.firebaseapp.com",
@@ -19,7 +20,7 @@ const firebaseConfig = {
   measurementId: "G-DY673TVWQS"
 };
 
-// Firebase 초기화 (앱이 없으면 만들고, 있으면 기존 것 사용)
+// Firebase 초기화
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -61,7 +62,6 @@ export const Insights: React.FC = () => {
         
       } catch (error) {
         console.error("데이터 가져오기 실패:", error);
-        // 에러가 나면 기본 글이라도 보여줍니다.
         setAllPosts(t.posts);
       } finally {
         setLoading(false);
