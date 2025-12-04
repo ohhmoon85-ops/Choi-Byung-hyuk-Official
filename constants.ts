@@ -1,8 +1,5 @@
 import { PageType } from './types';
 
-// Contact Email Constant - Change this single value to update email across the site
-export const CONTACT_EMAIL = "kma4185@gmail.com";
-
 export const TRANSLATIONS = {
   ko: {
     nav: [
@@ -145,25 +142,25 @@ export const TRANSLATIONS = {
           id: 1,
           type: "photo",
           title: "사우디 투자부 장관 면담 및 경제 협력 논의",
-          imageUrl: "./assets/media_saudi.jpg"
+          imageUrl: "/assets/media_saudi.jpg"
         },
         {
           id: 2,
           type: "photo",
           title: "제29대 한미연합사 부사령관 이임식 고별 연설",
-          imageUrl: "./assets/media_speech.jpg"
+          imageUrl: "/assets/media_speech.jpg"
         },
         {
           id: 3,
           type: "photo",
-          title: "주 사우디아라비아 대사 신임장 수여식",
-          imageUrl: "./assets/media_president.jpg"
+          title: "주 사우디 대사 신임장 수여",
+          imageUrl: "/assets/media_credence.jpg"
         },
         {
           id: 4,
           type: "photo",
           title: "한미 연합 방위 태세 현장 점검 (with Gen. Abrams)",
-          imageUrl: "./assets/media_abrams.jpg"
+          imageUrl: "/assets/media_abrams.jpg"
         }
       ]
     },
@@ -175,7 +172,7 @@ export const TRANSLATIONS = {
       info: {
         title: "Contact Info",
         office: "사무실 (Office)",
-        address: "서울특별시 종로구",
+        address: "서울특별시 종로구 (가상 주소)",
         inquiryTitle: "주요 문의 분야",
         inquiries: [
           "기업 및 기관 안보/리더십 강연",
@@ -200,15 +197,12 @@ export const TRANSLATIONS = {
       loginButton: "로그인",
       dashboardTitle: "작가 대시보드",
       writeTitle: "새 글 쓰기",
-      editTitle: "글 수정하기",
       formTitle: "제목",
       formCategory: "카테고리",
       formSummary: "요약 내용",
       formLang: "언어 설정",
       saveButton: "글 게시하기",
-      updateButton: "글 수정하기",
-      cancelButton: "취소",
-      successMessage: "성공적으로 저장되었습니다.",
+      successMessage: "성공적으로 게시되었습니다.",
       backButton: "홈으로 돌아가기"
     },
     footer: {
@@ -358,25 +352,25 @@ export const TRANSLATIONS = {
           id: 1,
           type: "photo",
           title: "Meeting with Saudi Minister of Investment",
-          imageUrl: "./assets/media_saudi.jpg"
+          imageUrl: "/assets/media_saudi.jpg"
         },
         {
           id: 2,
           type: "photo",
           title: "Farewell Speech at CFC Deputy Commander Change of Command",
-          imageUrl: "./assets/media_speech.jpg"
+          imageUrl: "/assets/media_speech.jpg"
         },
         {
           id: 3,
           type: "photo",
           title: "Credential Presentation Ceremony as Ambassador",
-          imageUrl: "./assets/media_president.jpg"
+          imageUrl: "/assets/media_cerdence.jpg"
         },
         {
           id: 4,
           type: "photo",
           title: "Inspecting ROK-US Joint Defense Posture (with Gen. Abrams)",
-          imageUrl: "./assets/media_abrams.jpg"
+          imageUrl: "/assets/media_abrams.jpg"
         }
       ]
     },
@@ -388,7 +382,7 @@ export const TRANSLATIONS = {
       info: {
         title: "Contact Info",
         office: "Office",
-        address: "Jongno-gu, Seoul",
+        address: "Jongno-gu, Seoul (Virtual Address)",
         inquiryTitle: "Key Inquiry Areas",
         inquiries: [
           "Security/Leadership Lectures for Corporations",
@@ -402,7 +396,7 @@ export const TRANSLATIONS = {
         org: "Organization",
         email: "Email",
         type: "Inquiry Type",
-        typeOptions: ["Lecture Request", "Advisory Request", "Interview Request", "Other"],
+        typeOptions: ["Lecture Request", "Advisory Reques므t", "Interview Request", "Other"],
         message: "Message",
         submit: "Send Message"
       }
@@ -413,15 +407,12 @@ export const TRANSLATIONS = {
       loginButton: "Login",
       dashboardTitle: "Author Dashboard",
       writeTitle: "Write New Post",
-      editTitle: "Edit Post",
       formTitle: "Title",
       formCategory: "Category",
       formSummary: "Summary",
       formLang: "Language",
       saveButton: "Publish Post",
-      updateButton: "Update Post",
-      cancelButton: "Cancel",
-      successMessage: "Successfully saved.",
+      successMessage: "Successfully published.",
       backButton: "Back to Home"
     },
     footer: {
