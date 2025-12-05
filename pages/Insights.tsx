@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 // ------------------------------------------------------------------
-// 🛠️ [긴급 수정] 경로 오류 방지를 위해 필요한 기능들을 이 파일 안에 직접 정의합니다.
-// 이렇게 하면 "../contexts/..." 같은 파일을 못 찾는 에러가 100% 사라집니다.
+// 🛠️ [경로 오류 방지용] 이 파일 하나로 모든 게 작동하도록 내부 정의
 // ------------------------------------------------------------------
 
-// 1. 타입 정의 (types.ts 대체)
+// 1. 타입 정의
 interface InsightItem {
   id: string;
   title: string;
@@ -18,8 +17,7 @@ interface InsightItem {
   [key: string]: any;
 }
 
-// 2. 언어 설정 기능 모의 (LanguageContext 대체)
-// 현재는 '한국어(KO)'로 고정하여 작동하게 합니다.
+// 2. 언어 설정 기능 모의 (LanguageContext 대체 - 한국어 고정)
 const useLanguage = () => {
   return {
     language: 'KO', 
@@ -29,7 +27,7 @@ const useLanguage = () => {
           title: "통찰과 제언",
           desc: "현장의 경험을 통해 얻은 교훈을 나눕니다.\n대한민국의 내일을 위한 전략적 제언들입니다."
         },
-        posts: [] as InsightItem[] // 기본 고정 글 (필요 시 추가 가능)
+        posts: [] as InsightItem[]
       }
     }
   };
@@ -40,8 +38,8 @@ const useLanguage = () => {
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, query } from "firebase/firestore";
 
-// 🛠️ Firebase 설정값 (경로 오류 방지용 직접 입력)
-// 사용자님이 보내주신 choi-77760 프로젝트 설정입니다.
+// 🛠️ [중요] 글이 실제로 저장된 'choi-77760' 프로젝트와 연결합니다!
+// 파일 경로 문제를 피하기 위해 설정을 여기에 직접 입력했습니다.
 const firebaseConfig = {
   apiKey: "AIzaSyA9erYjr_w9f0k11ifajB_J3ebw8p8uSNI",
   authDomain: "choi-77760.firebaseapp.com",
@@ -56,8 +54,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ✅ 컴포넌트 정의
 const Insights: React.FC = () => {
-  // 위에서 정의한 임시 언어 설정 사용 (오류 방지)
   const { content, language } = useLanguage(); 
   const t = content.insights;
   const [allPosts, setAllPosts] = useState<InsightItem[]>([]);
@@ -67,15 +65,14 @@ const Insights: React.FC = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        console.log("🔥 [choi-77760] Firebase 데이터 가져오기 시작...");
+        console.log("🔥 [choi-77760] 데이터 가져오기 시작...");
 
-        // 1. Firebase에서 데이터 가져오기 🚀
+        // 1. 데이터 가져오기
         const q = query(collection(db, "insights")); 
         const querySnapshot = await getDocs(q);
 
-        console.log(`📦 Firebase에서 발견된 글 개수: ${querySnapshot.size}개`);
+        console.log(`📦 발견된 글 개수: ${querySnapshot.size}개`);
 
-        // 2. 데이터 변환
         const firebasePosts: InsightItem[] = querySnapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -90,19 +87,22 @@ const Insights: React.FC = () => {
           } as InsightItem;
         });
 
-        // 3. 필터링 (대소문자 무시, 언어 설정 없는 글 허용)
+        // 2. 필터링 (대소문자 무시)
         const filteredFirebasePosts = firebasePosts.filter(p => {
+          // 언어 설정이 없는 글도 일단 보여줍니다.
           if (!p.lang) return true; 
+          // ko == KO 대소문자 무시하고 비교
           return p.lang.toLowerCase() === language.toLowerCase();
         });
 
-        console.log(`✅ 화면에 표시할 글 개수: ${filteredFirebasePosts.length}개`);
+        console.log(`✅ 화면 표시 개수: ${filteredFirebasePosts.length}개`);
 
-        // 4. 합치기
+        // 3. 합치기
         setAllPosts([...filteredFirebasePosts, ...t.posts]);
         
       } catch (error) {
         console.error("❌ 데이터 가져오기 실패:", error);
+        // 에러가 나도 화면이 깨지지 않도록 기본값 설정
         setAllPosts(t.posts);
       } finally {
         setLoading(false);
@@ -141,6 +141,7 @@ const Insights: React.FC = () => {
           </div>
         )}
 
+        {/* 글 목록 리스트 */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {allPosts.map((post) => (
             <div key={post.id} className="flex flex-col bg-white border border-gray-200 rounded-lg p-8 hover:border-gold-500 transition-colors group cursor-pointer h-full">
@@ -167,6 +168,11 @@ const Insights: React.FC = () => {
       </div>
     </div>
   );
+};
+
+// ✅ Named Export와 Default Export 모두 제공하여 에러 방지
+export { Insights };
+export default Insights;
 };
 
 // ✅ [중요] Default Export 추가하여 App.tsx 호환성 확보
