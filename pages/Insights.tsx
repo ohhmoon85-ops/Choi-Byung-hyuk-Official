@@ -168,6 +168,3 @@ const Insights: React.FC = () => {
 
 // ✅ [중요] 내보내기 설정 (Default Export)
 export default Insights;
-// ✅ Named Export와 Default Export 모두 제공하여 에러 방지
-export { Insights };
-export default Insights;
