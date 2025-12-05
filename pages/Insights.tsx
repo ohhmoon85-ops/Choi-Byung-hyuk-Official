@@ -173,7 +173,3 @@ const Insights: React.FC = () => {
 // ✅ Named Export와 Default Export 모두 제공하여 에러 방지
 export { Insights };
 export default Insights;
-
-// ✅ Named Export와 Default Export 모두 제공하여 에러 방지
-export { Insights };
-export default Insights;
