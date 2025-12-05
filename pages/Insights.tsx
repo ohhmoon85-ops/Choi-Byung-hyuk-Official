@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 // ------------------------------------------------------------------
-// 🛠️ [경로 오류 방지용] 이 파일 하나로 모든 게 작동하도록 내부 정의
+// 🛠️ [내부 정의] 
 // ------------------------------------------------------------------
 
 // 1. 타입 정의
@@ -17,29 +17,24 @@ interface InsightItem {
   [key: string]: any;
 }
 
-// 2. 언어 설정 기능 모의 (LanguageContext 대체 - 한국어 고정)
-const useLanguage = () => {
-  return {
-    language: 'KO', 
-    content: {
-      insights: {
-        header: {
-          title: "통찰과 제언",
-          desc: "현장의 경험을 통해 얻은 교훈을 나눕니다.\n대한민국의 내일을 위한 전략적 제언들입니다."
-        },
-        posts: [] as InsightItem[]
-      }
-    }
-  };
+// 2. [수정됨] 고정된 텍스트 데이터 (컴포넌트 밖으로 꺼내서 무한 로딩 방지)
+const STATIC_CONTENT = {
+  insights: {
+    header: {
+      title: "통찰과 제언",
+      desc: "현장의 경험을 통해 얻은 교훈을 나눕니다.\n대한민국의 내일을 위한 전략적 제언들입니다."
+    },
+    posts: [] as InsightItem[]
+  }
 };
+
 // ------------------------------------------------------------------
 
 // ✅ Firebase 필수 기능 가져오기
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore, collection, getDocs, query } from "firebase/firestore";
 
-// 🛠️ [중요] 글이 실제로 저장된 'choi-77760' 프로젝트와 연결합니다!
-// 파일 경로 문제를 피하기 위해 설정을 여기에 직접 입력했습니다.
+// 🛠️ [핵심] 'choi-77760' 프로젝트 연결
 const firebaseConfig = {
   apiKey: "AIzaSyA9erYjr_w9f0k11ifajB_J3ebw8p8uSNI",
   authDomain: "choi-77760.firebaseapp.com",
@@ -50,14 +45,18 @@ const firebaseConfig = {
   measurementId: "G-N1RW0JGTL2"
 };
 
-// Firebase 초기화
-const app = initializeApp(firebaseConfig);
+// 🛡️ Firebase 중복 초기화 방지
+const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ------------------------------------------------------------------
 // ✅ 컴포넌트 정의
+// ------------------------------------------------------------------
 const Insights: React.FC = () => {
-  const { content, language } = useLanguage(); 
-  const t = content.insights;
+  // 언어 설정 고정 (무한 로딩 원인 제거)
+  const language = 'KO';
+  const t = STATIC_CONTENT.insights;
+
   const [allPosts, setAllPosts] = useState<InsightItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -89,9 +88,7 @@ const Insights: React.FC = () => {
 
         // 2. 필터링 (대소문자 무시)
         const filteredFirebasePosts = firebasePosts.filter(p => {
-          // 언어 설정이 없는 글도 일단 보여줍니다.
           if (!p.lang) return true; 
-          // ko == KO 대소문자 무시하고 비교
           return p.lang.toLowerCase() === language.toLowerCase();
         });
 
@@ -102,7 +99,6 @@ const Insights: React.FC = () => {
         
       } catch (error) {
         console.error("❌ 데이터 가져오기 실패:", error);
-        // 에러가 나도 화면이 깨지지 않도록 기본값 설정
         setAllPosts(t.posts);
       } finally {
         setLoading(false);
@@ -110,7 +106,7 @@ const Insights: React.FC = () => {
     };
 
     fetchPosts();
-  }, [language, t.posts]);
+  }, []); // 의존성 배열 비움 (한 번만 실행되도록 설정)
 
   return (
     <div className="bg-white animate-fade-in">
@@ -170,6 +166,8 @@ const Insights: React.FC = () => {
   );
 };
 
+// ✅ [중요] 내보내기 설정 (Default Export)
+export default Insights;
 // ✅ Named Export와 Default Export 모두 제공하여 에러 방지
 export { Insights };
 export default Insights;
